@@ -55,3 +55,22 @@
     padding: 20px;
   }
   
+  .greeting {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    background: #dddfdb;
+    border-radius: 10px;
+    
+  }
+  
+  .greeting p {
+    font-size: 18px;
+    
+  }
+  
+  .greeting span {
+    margin-right: 10px;
+    font-size: 24px;
+    
+  }

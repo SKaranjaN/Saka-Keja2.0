@@ -120,8 +120,13 @@ function TenantDashboard() {
       </div>
 
       <div className="tenant-dashboard-content">
-        <div style={{ padding: '20px' }}>
-          {userData && <p>Hi, {userData.first_name}</p>}
+        <div className="greeting" style={{ padding: '20px' }}>
+          {userData && <p>
+            <span role="img" aria-label="Waving Hand Emoji">
+              👋
+            </span>
+            Hi, {userData.first_name}
+          </p>}
         </div>
 
         {showPropertyList && <PropertyList />}
