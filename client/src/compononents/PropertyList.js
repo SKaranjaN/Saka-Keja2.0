@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import PropertyCard from './PropertyCard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function PropertyList() {
   const [properties, setProperties] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const propertiesPerPage = 10;
+
+  const [selectedFilter, setSelectedFilter] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -20,7 +28,7 @@ function PropertyList() {
         console.error('Error fetching properties:', error);
       }
     };
-  
+
     fetchProperties();
   }, [currentPage]);
 
@@ -35,10 +43,96 @@ function PropertyList() {
     setCurrentPage(pageNumber);
   };
 
+  const filteredProperties = properties.filter((property) => {
+    const categoryMatch =
+      selectedFilter === 'category'
+        ? property.category.toLowerCase().includes(selectedCategory.toLowerCase())
+        : true;
+
+    const priceMatch =
+      selectedFilter === 'price'
+        ? (priceRange.min === '' || property.price >= parseInt(priceRange.min)) &&
+          (priceRange.max === '' || property.price <= parseInt(priceRange.max))
+        : true;
+
+    const locationMatch =
+      selectedFilter === 'location'
+        ? property.location.toLowerCase().includes(searchInput.toLowerCase())
+        : true;
+
+    return categoryMatch && priceMatch && locationMatch;
+  });
+
   return (
     <div>
+      <div style={{ display: 'flex', alignItems: 'center', padding: '0 20px' }}>
+        <div style={{ position: 'relative', flex: 1 }}>
+          <input
+            type="text"
+            placeholder="Search Properties"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+          />
+          <FontAwesomeIcon
+            icon={faFilter}
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+            style={{
+              position: 'absolute',
+              right: '10px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              cursor: 'pointer',
+            }}
+          />
+        </div>
+      </div>
+      {isFilterOpen && (
+        <div>
+          {/* Filter options */}
+          <div>
+            <select
+              value={selectedFilter}
+              onChange={(e) => setSelectedFilter(e.target.value)}
+            >
+              <option value="">Select Filter</option>
+              <option value="category">Category</option>
+              <option value="price">Price</option>
+              <option value="location">Location</option>
+            </select>
+            {selectedFilter === 'category' && (
+              <input
+                type="text"
+                placeholder="Category"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              />
+            )}
+            {selectedFilter === 'price' && (
+              <div>
+                <input
+                  type="number"
+                  placeholder="Min Price"
+                  value={priceRange.min}
+                  onChange={(e) =>
+                    setPriceRange({ ...priceRange, min: e.target.value })
+                  }
+                />
+                <input
+                  type="number"
+                  placeholder="Max Price"
+                  value={priceRange.max}
+                  onChange={(e) =>
+                    setPriceRange({ ...priceRange, max: e.target.value })
+                  }
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       <div style={propertyCardsContainerStyle}>
-        {properties.map((property) => (
+        {filteredProperties.map((property) => (
           <PropertyCard key={property.id} property={property} />
         ))}
       </div>
