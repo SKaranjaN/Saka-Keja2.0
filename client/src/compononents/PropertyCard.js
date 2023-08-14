@@ -34,7 +34,7 @@ function PropertyCard({ property }) {
         <p>Price: ${property.price}</p>
         <p>Number of Rooms: {property.number_of_rooms}</p>
         <p>Category: {property.categories}</p>
-        <button onClick={handleCardClick} style={{ background: '#3A5B22', color: 'white', border: 'none', cursor: 'pointer', padding: '5px 10px' }}>View</button>
+        <button onClick={handleCardClick} style={{ borderRadius: '5px', background: '#3A5B22', color: 'white', border: 'none', cursor: 'pointer', padding: '5px 10px' }}>View</button>
       </div>
     </div>
   );
