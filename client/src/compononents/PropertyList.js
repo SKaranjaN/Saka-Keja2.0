@@ -50,7 +50,12 @@ function PropertyList() {
           (priceRange.max === '' || property.price <= parseInt(priceRange.max))
         : true;
   
-    return priceMatch;
+    const locationMatch =
+      searchInput !== ''
+        ? property.location.toLowerCase().includes(searchInput.toLowerCase())
+        : true;
+  
+    return priceMatch && locationMatch;
   });
   
 
