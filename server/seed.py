@@ -2,7 +2,7 @@ import random
 import string
 from faker import Faker
 from app import app, db
-from models import User, Property, Payment, MoveAssistance, Review
+from models import User, Property, Payment, Mover, Review
 
 fake = Faker()
 
@@ -57,14 +57,14 @@ def seed_payments():
         db.session.add(payment)
     db.session.commit()
 
-def seed_move_assistance():
+def seed_movers():
     users = User.query.filter_by(user_type='tenant').all()
     for _ in range(5):
         tenant = random.choice(users)
         service_details = fake.text(max_nb_chars=200)
         status = random.choice(['requested', 'in_progress', 'completed'])
-        move_assistance = MoveAssistance(tenant=tenant, service_details=service_details, status=status)
-        db.session.add(move_assistance)
+        mover = Mover(tenant=tenant, service_details=service_details, status=status)
+        db.session.add(mover)
     db.session.commit()
 
 def seed_reviews():
@@ -83,7 +83,7 @@ def seed_all():
     seed_users()
     seed_properties()
     seed_payments()
-    seed_move_assistance()
+    seed_movers()
     seed_reviews()
 
 if __name__ == '__main__':

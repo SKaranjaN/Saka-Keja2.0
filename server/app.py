@@ -39,7 +39,7 @@ jwt_manager = JWTManager(app)
 
 mail = Mail(app)
 
-from models import User, Payment, Property, MoveAssistance, Review
+from models import User, Payment, Property, Mover, Review
 
 
 def send_verification_email(user_email, token):
@@ -552,8 +552,8 @@ class Payment_by_Id(Resource):
 
         return response
 
-@api.route('/move_assistances')
-class MoveAssistances(Resource):
+@api.route('/movers')
+class Movers(Resource):
     @api.doc(description='Get a list of all move assistances')
     def get(self):
         page = int(request.args.get('page', 1))
@@ -561,9 +561,9 @@ class MoveAssistances(Resource):
 
         offset = (page - 1) * per_page
 
-        move_assistances = MoveAssistance.query.offset(offset).limit(per_page).all()
+        move_assistances = Mover.query.offset(offset).limit(per_page).all()
 
-        total_items = MoveAssistance.query.count()
+        total_items = Mover.query.count()
         total_pages = (total_items + per_page - 1) // per_page
 
         response = {
@@ -576,7 +576,7 @@ class MoveAssistances(Resource):
 
         return make_response(jsonify(response), 200)
     
-    @api.doc(description='Create a new move assistance', body=move_assistance_model)
+    @api.doc(description='Create a new mover', body=move_assistance_model)
     def post(self):
         data = request.get_json()
 
@@ -585,7 +585,7 @@ class MoveAssistances(Resource):
             uploaded_image = cloudinary.uploader.upload(data['image'])
             image_url = uploaded_image['secure_url']
 
-        new_move = MoveAssistance(
+        new_move = Mover(
             service_details=data['service_details'],
             image=image_url,
             status=data['status'],
@@ -599,24 +599,24 @@ class MoveAssistances(Resource):
 
         return response
 
-@api.route('/move_assistances/<int:id>')
-class MoveAssistance_by_Id(Resource):
+@api.route('/movers/<int:id>')
+class Movers_by_Id(Resource):
     @api.doc(description='Get a specific move assistance by ID')
     def get(self, id):
-        move = MoveAssistance.query.get(id)
+        move = Mover.query.get(id)
         if not move:
-            return make_response(jsonify({"error": "MoveAssistance not found"}), 404)
+            return make_response(jsonify({"error": "Mover not found"}), 404)
 
         response_dict = move.to_dict()
         response = make_response(jsonify(response_dict), 200)
 
         return response
 
-    @api.doc(description='Update a specific move assistance by ID', body=move_assistance_model)
+    @api.doc(description='Update a specific mover by ID', body=move_assistance_model)
     def patch(self, id):
-        move = MoveAssistance.query.get(id)
+        move = Mover.query.get(id)
         if not move:
-            return make_response(jsonify({"error": "MoveAssistance not found"}), 404)
+            return make_response(jsonify({"error": "Mover not found"}), 404)
 
         data = request.get_json()
         for attr, value in data.items():
@@ -628,11 +628,11 @@ class MoveAssistance_by_Id(Resource):
 
         return response
 
-    @api.doc(description='Delete a specific move assistance by ID')
+    @api.doc(description='Delete a specific mover by ID')
     def delete(self, id):
-        move = MoveAssistance.query.get(id)
+        move = Mover.query.get(id)
         if not move:
-            return make_response(jsonify({"error": "MoveAssistance not found"}), 404)
+            return make_response(jsonify({"error": "Mover not found"}), 404)
 
         db.session.delete(move)
         db.session.commit()

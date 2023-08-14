@@ -17,6 +17,7 @@ paypal-checkout-serversdk = "*"
 sqlalchemy-serializer = "*"
 "sqlalchemy.orm" = "*"
 faker = "*"
+psycopg2 = "*"
 
 [dev-packages]
 

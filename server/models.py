@@ -17,8 +17,8 @@ class User(db.Model):
 
     properties_owned = db.relationship("Property", backref="owner", lazy="select")
     payments_made = db.relationship("Payment", backref="tenant", lazy="select")
-    move_assistance_requests = db.relationship("MoveAssistance", backref="tenant", lazy="select")
-    reviews_written = db.relationship("Review", backref="tenant", lazy="select")
+    mover_requests = db.relationship("Mover", backref="tenant", lazy="select")
+    reviews_written = db.relationship("Review", backref="tenant", lazy="select", overlaps='tenant_relation,reviews_written')
 
     def to_dict(self):
         return {
@@ -125,8 +125,8 @@ class Payment(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<Payment: {self.id}>'
 
-class MoveAssistance(db.Model, SerializerMixin):
-    __tablename__ = 'move_assistance'
+class Mover(db.Model, SerializerMixin):
+    __tablename__ = 'movers'
     id = db.Column(db.Integer, primary_key=True)
     service_details = db.Column(db.String)
     image = db.Column(db.String)
@@ -144,7 +144,7 @@ class MoveAssistance(db.Model, SerializerMixin):
         }
 
     def __repr__(self):
-        return f'<MoveAssistance: {self.id}>'
+        return f'<Mover: {self.id}>'
 
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
@@ -154,8 +154,6 @@ class Review(db.Model, SerializerMixin):
     
     tenant_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     property_id = db.Column(db.Integer, db.ForeignKey('properties.id'), nullable=False)
-    
-    tenant_relation = db.relationship('User', backref='reviews', foreign_keys=[tenant_id])
 
     def to_dict(self):
         return {
@@ -163,10 +161,11 @@ class Review(db.Model, SerializerMixin):
             'review_text': self.review_text,
             'rating': self.rating,
             'tenant': {
-                'first_name': self.tenant_relation.first_name
+                'first_name': self.tenant.first_name
             },
             'property_id': self.property_id,
         }
+
 
     def __repr__(self):
         return f'<Review: {self.id}>'
