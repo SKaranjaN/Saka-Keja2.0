@@ -65,7 +65,7 @@ function PropertyList() {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '0 20px' }}>
+      <div style={{ width: '97.5%', display: 'flex', alignItems: 'center', paddingRight: '100px' }}>
         <div style={{ position: 'relative', flex: 1 }}>
           <input
             type="text"
