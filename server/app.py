@@ -256,6 +256,7 @@ class Users(Resource):
         }
 
         return make_response(jsonify(response), 200)
+    
 
     @api.doc(description='Create a new user', body=user_model)
     def post(self):
@@ -403,15 +404,24 @@ class Property_by_Id(Resource):
         property = Property.query.get(id)
         if not property:
             return make_response(jsonify({"error": "Property not found"}), 404)
-
+        
         data = request.get_json()
+        
+        image_urls = []
+        if 'image_urls' in data and isinstance(data['image_urls'], list):
+            for image_url in data['image_urls']:
+                uploaded_image = cloudinary.uploader.upload(image_url)
+                image_urls.append(uploaded_image['secure_url'])
+        
         for attr, value in data.items():
             setattr(property, attr, value)
-
+        property.image_urls = image_urls
+        
         db.session.commit()
+        
         response_dict = property.to_dict()
         response = make_response(jsonify(response_dict), 200)
-
+        
         return response
 
     @api.doc(description='Delete a specific property by ID')

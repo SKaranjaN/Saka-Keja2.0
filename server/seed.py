@@ -14,7 +14,7 @@ def generate_random_password():
 
 
 def seed_users():
-    for _ in range(70):
+    for _ in range(10):
         first_name = fake.first_name()
         last_name = fake.last_name()
         email = fake.email()
@@ -28,7 +28,7 @@ def seed_users():
 
 def seed_properties():
     users = User.query.all()
-    for _ in range(60):
+    for _ in range(10):
         owner = random.choice(users)
         number_of_rooms = fake.random_int(min=1, max=10)
         categories = ' '.join(fake.words(nb=3))
@@ -46,7 +46,7 @@ def seed_properties():
 def seed_payments():
     users = User.query.filter_by(user_type='tenant').all()
     properties = Property.query.all()
-    for _ in range(50):
+    for _ in range(10):
         tenant = random.choice(users)
         property = random.choice(properties)
         amount = fake.random_int(min=100, max=1000)
@@ -59,7 +59,7 @@ def seed_payments():
 
 def seed_movers():
     users = User.query.filter_by(user_type='tenant').all()
-    for _ in range(5):
+    for _ in range(2):
         tenant = random.choice(users)
         service_details = fake.text(max_nb_chars=200)
         status = random.choice(['requested', 'in_progress', 'completed'])
@@ -70,7 +70,7 @@ def seed_movers():
 def seed_reviews():
     users = User.query.filter_by(user_type='tenant').all()
     properties = Property.query.all()
-    for _ in range(70):
+    for _ in range(10):
         tenant = random.choice(users)
         property = random.choice(properties)
         review_text = fake.paragraph()
