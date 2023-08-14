@@ -3,6 +3,7 @@ import PropertyCard from './PropertyCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 
+console.log(faSearch)
 function PropertyList() {
   const [properties, setProperties] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -10,7 +11,6 @@ function PropertyList() {
 
   const [selectedFilter, setSelectedFilter] = useState('');
   const [searchInput, setSearchInput] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -44,24 +44,15 @@ function PropertyList() {
   };
 
   const filteredProperties = properties.filter((property) => {
-    const categoryMatch =
-      selectedFilter === 'category'
-        ? property.category.toLowerCase().includes(selectedCategory.toLowerCase())
-        : true;
-
     const priceMatch =
       selectedFilter === 'price'
         ? (priceRange.min === '' || property.price >= parseInt(priceRange.min)) &&
           (priceRange.max === '' || property.price <= parseInt(priceRange.max))
         : true;
-
-    const locationMatch =
-      selectedFilter === 'location'
-        ? property.location.toLowerCase().includes(searchInput.toLowerCase())
-        : true;
-
-    return categoryMatch && priceMatch && locationMatch;
+  
+    return priceMatch;
   });
+  
 
   return (
     <div>
@@ -89,25 +80,15 @@ function PropertyList() {
       </div>
       {isFilterOpen && (
         <div>
-          {/* Filter options */}
           <div>
-            <select
-              value={selectedFilter}
-              onChange={(e) => setSelectedFilter(e.target.value)}
-            >
-              <option value="">Select Filter</option>
-              <option value="category">Category</option>
-              <option value="price">Price</option>
-              <option value="location">Location</option>
-            </select>
-            {selectedFilter === 'category' && (
-              <input
-                type="text"
-                placeholder="Category"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              />
-            )}
+          <select
+  value={selectedFilter}
+  onChange={(e) => setSelectedFilter(e.target.value)}
+>
+  <option value="">Select Filter</option>
+  <option value="price">Price</option>
+</select>
+
             {selectedFilter === 'price' && (
               <div>
                 <input
