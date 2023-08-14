@@ -16,6 +16,7 @@ flask-mail = "*"
 paypal-checkout-serversdk = "*"
 sqlalchemy-serializer = "*"
 "sqlalchemy.orm" = "*"
+faker = "*"
 
 [dev-packages]
 
