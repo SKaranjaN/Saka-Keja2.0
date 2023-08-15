@@ -118,7 +118,12 @@ function TenantPropertyReview() {
     }
   };
   return (
+    <div>
+      <div className="back-arrow" onClick={() => navigate(-1)}>
+        &#8249; Back
+      </div>
     <div className="property-review-container">
+      
       {property ? (
         <div className="property-details">
           <div className="carousel-container-1">
@@ -193,6 +198,7 @@ function TenantPropertyReview() {
         </div>
         <button onClick={handleReviewSubmit}>Submit Review</button>
       </div>
+    </div>
     </div>
   );
 }
