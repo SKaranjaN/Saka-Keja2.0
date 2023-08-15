@@ -4,6 +4,9 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import jwt_decode from 'jwt-decode';
 import '../styles/TenantPropertyReview.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+
 
 function TenantPropertyReview() {
     const location = useLocation();
@@ -167,7 +170,12 @@ function TenantPropertyReview() {
             {reviews.map((review) => (
               <li key={review.id}>
                 <p>Review by: {review.tenant.first_name}</p>
-                <p>Rating: {review.rating} stars</p>
+                <div className="review-rating">
+            {Array.from({ length: review.rating }).map((_, index) => (
+              <FontAwesomeIcon key={index} icon={faStar} className="star-icon"/>
+            ))}
+            <span>{review.rating} stars</span>
+          </div>
                 <p>{review.review_text}</p>
               </li>
             ))}

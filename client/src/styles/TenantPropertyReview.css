@@ -123,3 +123,13 @@
 .arrow-icon {
   margin-right: 5px;
 }
+
+.review-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.star-icon {
+  color: #FDD835; 
+}
