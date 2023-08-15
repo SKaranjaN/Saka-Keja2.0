@@ -9,10 +9,9 @@ import '../styles/TenantDashboard.css';
 function OwnerDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('post-property');
-  const [userData, setUserData] = useState(null); // State for owner's data
+  const [userData, setUserData] = useState(null); 
 
   useEffect(() => {
-    // Fetch owner's data and store it in state
     const fetchUserData = async () => {
       const userId = localStorage.getItem('user_id');
       if (!userId) {
