@@ -31,7 +31,7 @@ function PropertyCard({ property }) {
       </div>
       <div className="slide-details">
         <h3>{property.location}</h3>
-        <p>Price: ${property.price}</p>
+        <p>Price: Ksh {property.price}</p>
         <p>Number of Rooms: {property.number_of_rooms}</p>
         <p>Category: {property.categories}</p>
         <button onClick={handleCardClick} style={{ borderRadius: '5px', background: '#3A5B22', color: 'white', border: 'none', cursor: 'pointer', padding: '5px 10px' }}>View</button>

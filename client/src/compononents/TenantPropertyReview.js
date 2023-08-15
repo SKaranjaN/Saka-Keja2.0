@@ -143,18 +143,18 @@ function TenantPropertyReview() {
           </div>
           <div className="details-info">
             <h2>{property.location}</h2>
-            <p>Price: ${property.price}</p>
+            <p>Price: Ksh {property.price}</p>
             <p>Number of Rooms: {property.number_of_rooms}</p>
             <p>Description: {property.description}</p>
-            <p>Category: {property.category}</p>
+            <p>Category: {property.categories}</p>
             {showOwnerDetails && ownerDetails && (
-              <div>
+              <div className="Odetails">
                 <p>Owner: {ownerDetails.first_name}</p>
                 <p>Phone Number: {ownerDetails.phone_number}</p>
               </div>
             )}
-            <button onClick={() => navigate('/payments')} style={{ background: '#3A5B22', color: 'white', border: 'none', cursor: 'pointer', padding: '5px 10px', borderRadius: '8px' }}>Pay</button>
-            <button onClick={handleBookClick} style={{ background: '#3A5B22', color: 'white', border: 'none', cursor: 'pointer', padding: '5px 10px', borderRadius: '8px' }}>Book</button>
+           <button onClick={() => navigate('/payments')} style={{ background: '#3A5B22', color: 'white', border: 'none', cursor: 'pointer', padding: '5px 10px', borderRadius: '8px', marginRight: '10px' }}>Pay</button>
+           <button onClick={handleBookClick} style={{ background: '#3A5B22', color: 'white', border: 'none', cursor: 'pointer', padding: '5px 10px', borderRadius: '8px', marginLeft: '10px', marginBottom: '10px'}}>Book</button>
           </div>
         </div>
       ) : (
