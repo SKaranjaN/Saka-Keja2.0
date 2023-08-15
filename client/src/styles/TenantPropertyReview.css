@@ -37,11 +37,11 @@
 .details-info {
   margin-top: 20px;
   text-align: center;
-  background-color: #dddfdb;
+  border: 2px solid #c3c5c1;
   border-radius: 10px;
 }
 .Odetails {
-  background-color: #b0c4a3;
+  background-color: #dfdfdf;
   border-radius: 10px;
 }
 
