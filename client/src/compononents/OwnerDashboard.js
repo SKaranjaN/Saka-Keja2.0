@@ -4,10 +4,11 @@ import PostProperty from './PostProperty';
 import ViewProperties from './ViewProperties';
 import ViewPaymentBalance from './ViewPaymentBalance';
 import Settings from './Settings';
+import '../styles/TenantDashboard.css';
 
 function OwnerDashboard() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('post-property'); 
+  const [activeTab, setActiveTab] = useState('post-property');
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -18,31 +19,57 @@ function OwnerDashboard() {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
-      <div style={{ width: '20%', height: '100vh', backgroundColor: '#dcdcdc', padding: '20px' }}>
-        <ul style={{ listStyleType: 'none', padding: 0 }}>
-          <li style={{ marginBottom: '10px' }}>
-            <div onClick={() => handleTabClick('post-property')} style={{ cursor: 'pointer' }}>Post Property</div>
+    <div className="tenant-dashboard-container">
+      <div className="tenant-dashboard-menu">
+        <ul className="listItems">
+          <li>
+            <div
+              onClick={() => handleTabClick('post-property')}
+              className={activeTab === 'post-property' ? 'active' : ''}
+            >
+              Post Property
+            </div>
           </li>
-          <li style={{ marginBottom: '10px' }}>
-            <div onClick={() => handleTabClick('view-properties')} style={{ cursor: 'pointer' }}>View My Properties</div>
+          <li>
+            <div
+              onClick={() => handleTabClick('view-properties')}
+              className={activeTab === 'view-properties' ? 'active' : ''}
+            >
+              View My Properties
+            </div>
           </li>
-          <li style={{ marginBottom: '10px' }}>
-            <div onClick={() => handleTabClick('view-payment-balance')} style={{ cursor: 'pointer' }}>View Payment Balance</div>
+          <li>
+            <div
+              onClick={() => handleTabClick('view-payment-balance')}
+              className={activeTab === 'view-payment-balance' ? 'active' : ''}
+            >
+              View Payment Balance
+            </div>
           </li>
-          <li style={{ marginBottom: '10px' }}>
-            <div onClick={() => handleTabClick('settings')} style={{ cursor: 'pointer' }}>Settings</div>
+          <li>
+            <div
+              onClick={() => handleTabClick('settings')}
+              className={activeTab === 'settings' ? 'active' : ''}
+            >
+              Settings
+            </div>
           </li>
-          <li style={{ marginBottom: '10px' }}>
-            <button onClick={handleLogout} style={{ background: '#3A5B22', color: 'white', border: 'none', cursor: 'pointer', padding: '5px 10px' }}>Logout</button>
+          <li>
+            
           </li>
         </ul>
+        <button
+              className="logout-button"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
       </div>
 
-      <div style={{ flex: 1, padding: '20px' }}>
+      <div className="tenant-dashboard-content">
         {activeTab === 'post-property' && <PostProperty />}
         {activeTab === 'view-properties' && <ViewProperties />}
-        {activeTab === 'view-payment-balance' && <ViewPaymentBalance />} 
+        {activeTab === 'view-payment-balance' && <ViewPaymentBalance />}
         {activeTab === 'settings' && <Settings />}
       </div>
     </div>
