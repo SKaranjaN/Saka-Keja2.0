@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import '../styles/PostProperty.css';
 
 function PostProperty() {
   const navigate = useNavigate();
@@ -78,63 +79,72 @@ function PostProperty() {
     <div className="post-property-container">
       <h2>Post a New Property</h2>
       <form onSubmit={handleSubmit}>
-        <label>Number of Rooms:</label>
-        <input
-          type="number"
-          name="number_of_rooms"
-          value={formData.number_of_rooms}
-          onChange={handleChange}
-          required
-        />
+        <div className="input-pair">
+          <label>Number of Rooms:</label>
+          <input
+            type="number"
+            name="number_of_rooms"
+            value={formData.number_of_rooms}
+            onChange={handleChange}
+            required
+          />
   
-        <label>Categories:</label>
-        <input
-          type="text"
-          name="categories"
-          value={formData.categories}
-          onChange={handleChange}
-          required
-        />
+          <label>Category:</label>
+          <input
+            type="text"
+            name="categories"
+            value={formData.categories}
+            onChange={handleChange}
+            required
+          />
+        </div>
   
-        <label>Location:</label>
-        <input
-          type="text"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-        />
+        <div className="input-pair">
+          <label>Location:</label>
+          <input
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+          />
   
-        <label>Price:</label>
-        <input
-          type="number"
-          name="price"
-          value={formData.price}
-          onChange={handleChange}
-          required
-        />
+          <label>Price:</label>
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            required
+          />
+        </div>
   
-        <label>Description:</label>
-        <textarea
+        <div className="input-pair">
+          <label>Description:</label>
+          <textarea
+          className="description-input"
           name="description"
           value={formData.description}
           onChange={handleChange}
           required
         />
+        </div>
   
-        <label>Images:</label>
-        <input
-          type="file"
-          name="image_urls"
-          accept="image/*"
-          multiple
-          onChange={handleImageChange}
-        />
+        <div className="input-pair">
+          <label>Images:</label>
+          <input
+            type="file"
+            name="image_urls"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+          />
+        </div>
   
         <button type="submit">Post Property</button>
       </form>
     </div>
-  );  
+  );
 }
 
 export default PostProperty;

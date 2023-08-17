@@ -1,0 +1,59 @@
+.post-property-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .post-property-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .post-property-container form {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 6px; 
+  }
+  
+  .post-property-container label {
+    font-weight: bold;
+  }
+  
+  .post-property-container input,
+  .post-property-container textarea {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    grid-column: span 2;
+  }
+  
+  .post-property-container button {
+    background-color: #3a5b22;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    grid-column: span 2;
+    justify-self: center;
+  }
+  
+  .post-property-container button:hover {
+    background-color: #3a5b22;
+  }
+  
+  .post-property-container .input-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .post-property-container .description-input {
+    grid-column: span 2;
+  }
+  
