@@ -6,6 +6,7 @@ import '../styles/ViewProperties.css';
 
 function ViewProperties() {
   const [properties, setProperties] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const token = localStorage.getItem('access_token');
   const decodedToken = jwt_decode(token);
   const loggedInOwnerId = decodedToken.sub.user_id;
@@ -44,11 +45,24 @@ function ViewProperties() {
     fetchAllPages();
   }, [loggedInOwnerId]);
 
+  const filteredProperties = properties.filter(property =>
+    property.location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <h1>View Properties (Edit Property)</h1>
+      <div>
+      <input
+        type="text"
+        placeholder="Search by location"
+        value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)}
+        style={{ width: '50%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+    />
+      </div>
       <div className="grid-container">
-        {properties.map(property => (
+        {filteredProperties.map(property => (
           <OwnerViewPropertyCard key={property.id} property={property} />
         ))}
       </div>
