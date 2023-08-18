@@ -12,7 +12,7 @@ function PostProperty() {
     location: '',
     price: '',
     description: '',
-    image_urls: [],
+    image_urls: [], 
   });
 
   const handleChange = (event) => {
@@ -20,21 +20,50 @@ function PostProperty() {
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const files = Array.from(event.target.files);
+    const cloudinaryUrls = [];
+    
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'ml_default'); 
+      formData.append('api_key', '772552848921945');
+    
+      console.log('Sending formData:', formData);
+  
+      try {
+        const response = await fetch('https://api.cloudinary.com/v1_1/dyahkvt1m/image/upload', {
+          method: 'POST',
+          body: formData,
+        });
+  
+        console.log('Response:', response);
+  
+        if (response.ok) {
+          const data = await response.json();
+          cloudinaryUrls.push(data.secure_url);
+        } else {
+          console.error('Failed to upload image');
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+    
     setFormData((prevFormData) => ({
       ...prevFormData,
-      image_urls: [...prevFormData.image_urls, ...files],
+      image_urls: [...prevFormData.image_urls, ...cloudinaryUrls],
     }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     const token = localStorage.getItem('access_token');
     const decodedToken = jwt_decode(token);
     const owner_id = decodedToken.sub.user_id;
-  
+
     const propertyData = {
       owner_id: owner_id,
       number_of_rooms: parseInt(formData.number_of_rooms),
@@ -42,20 +71,21 @@ function PostProperty() {
       location: formData.location,
       price: parseFloat(formData.price),
       description: formData.description,
+      image_urls: formData.image_urls,
     };
-  
+
     const formDataToSend = JSON.stringify(propertyData);
-  
+
     try {
       const response = await fetch('http://127.0.0.1:5000/properties', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: formDataToSend,
       });
-  
+
       if (response.ok) {
         console.log('Property posted successfully');
         setFormData({
@@ -73,7 +103,6 @@ function PostProperty() {
       console.error('Error posting property:', error);
     }
   };
-
 
   return (
     <div className="post-property-container">
@@ -122,12 +151,12 @@ function PostProperty() {
         <div className="input-pair">
           <label>Description:</label>
           <textarea
-          className="description-input"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
+            className="description-input"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
         </div>
   
         <div className="input-pair">
