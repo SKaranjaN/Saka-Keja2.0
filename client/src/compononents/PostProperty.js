@@ -12,7 +12,7 @@ function PostProperty() {
     location: '',
     price: '',
     description: '',
-    image_urls: [], 
+    image_urls: [],
   });
 
   const handleChange = (event) => {
@@ -22,38 +22,32 @@ function PostProperty() {
 
   const handleImageChange = async (event) => {
     const files = Array.from(event.target.files);
-    const cloudinaryUrls = [];
-    
+    const serverUrls = [];
+
     for (const file of files) {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', 'ml_default'); 
-      formData.append('api_key', '772552848921945');
-    
-      console.log('Sending formData:', formData);
-  
+      formData.append('image', file);
+
       try {
-        const response = await fetch('https://api.cloudinary.com/v1_1/dyahkvt1m/image/upload', {
+        const response = await fetch('http://127.0.0.1:5000/upload', {
           method: 'POST',
           body: formData,
         });
-  
-        console.log('Response:', response);
-  
+
         if (response.ok) {
           const data = await response.json();
-          cloudinaryUrls.push(data.secure_url);
+          serverUrls.push(data.secure_url);
         } else {
-          console.error('Failed to upload image');
+          console.error('Failed to upload image to server');
         }
       } catch (error) {
-        console.error('Error uploading image:', error);
+        console.error('Error uploading image to server:', error);
       }
     }
-    
+
     setFormData((prevFormData) => ({
       ...prevFormData,
-      image_urls: [...prevFormData.image_urls, ...cloudinaryUrls],
+      image_urls: [...prevFormData.image_urls, ...serverUrls],
     }));
   };
 
@@ -117,7 +111,6 @@ function PostProperty() {
             onChange={handleChange}
             required
           />
-  
           <label>Category:</label>
           <input
             type="text"
@@ -127,7 +120,6 @@ function PostProperty() {
             required
           />
         </div>
-  
         <div className="input-pair">
           <label>Location:</label>
           <input
@@ -137,7 +129,6 @@ function PostProperty() {
             onChange={handleChange}
             required
           />
-  
           <label>Price:</label>
           <input
             type="number"
@@ -147,7 +138,6 @@ function PostProperty() {
             required
           />
         </div>
-  
         <div className="input-pair">
           <label>Description:</label>
           <textarea
@@ -158,7 +148,6 @@ function PostProperty() {
             required
           />
         </div>
-  
         <div className="input-pair">
           <label>Images:</label>
           <input
@@ -169,7 +158,6 @@ function PostProperty() {
             onChange={handleImageChange}
           />
         </div>
-  
         <button type="submit">Post Property</button>
       </form>
     </div>

@@ -8,7 +8,7 @@ function OwnerViewPropertyCard({ property }) {
   const navigate = useNavigate();  
 
   const handleCardClick = () => {
-    navigate(`/edit-property/${property.id}`); // Navigate to edit property page with property ID in URL
+    navigate("/edit-property");
   };
 
   return (
