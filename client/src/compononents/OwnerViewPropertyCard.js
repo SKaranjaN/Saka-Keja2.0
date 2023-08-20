@@ -8,7 +8,7 @@ function OwnerViewPropertyCard({ property }) {
   const navigate = useNavigate();  
 
   const handleCardClick = () => {
-    navigate("/edit-property");
+    navigate(`/edit-property/${property.id}`);
   };
 
   return (

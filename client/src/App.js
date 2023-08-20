@@ -26,7 +26,7 @@ function App() {
         <Route path="/view-payment-balance" element={<ViewPaymentBalance />} />
         <Route path="/tenant-property-review" element={<TenantPropertyReview />} />
         <Route path="/payments" element={<Payments />} />
-        <Route path="/edit-property" element={<EditProperty />} />
+        <Route path="/edit-property/:propertyId" element={<EditProperty />} />
       </Routes>
     </Router>
   );
