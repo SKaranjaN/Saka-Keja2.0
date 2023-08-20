@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import '../styles/PostProperty.css';
 
 function EditProperty() {
   const { propertyId } = useParams();
@@ -33,7 +34,7 @@ function EditProperty() {
     try {
       for (const file of files) {
         const formData = new FormData();
-        formData.append('image', file);  // Use 'image' as the form field name
+        formData.append('image', file); 
   
         const response = await fetch('http://127.0.0.1:5000/upload', {
           method: 'POST',
@@ -82,7 +83,10 @@ function EditProperty() {
   };
 
   return (
-    <div>
+    <div><div className="back-arrow" onClick={() => navigate(-1)}>
+    &#8249; Back
+  </div>
+    <div className="post-property-container">
       <h1>Edit Property</h1>
       <form onSubmit={handleSubmit}>
         <div className="input-pair">
@@ -155,6 +159,7 @@ function EditProperty() {
         </div>
         <button type="submit">Save Changes</button>
       </form>
+    </div>
     </div>
   );
 }
