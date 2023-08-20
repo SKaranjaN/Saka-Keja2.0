@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PostProperty from './PostProperty';
 import ViewProperties from './ViewProperties';
-import ViewPaymentBalance from './ViewPaymentBalance';
 import Settings from './Settings';
 import '../styles/TenantDashboard.css';
 
@@ -65,14 +64,6 @@ function OwnerDashboard() {
           </li>
           <li>
             <div
-              onClick={() => handleTabClick('view-payment-balance')}
-              className={activeTab === 'view-payment-balance' ? 'active' : ''}
-            >
-              View Payment Balance
-            </div>
-          </li>
-          <li>
-            <div
               onClick={() => handleTabClick('settings')}
               className={activeTab === 'settings' ? 'active' : ''}
             >
@@ -101,7 +92,6 @@ function OwnerDashboard() {
         </div>
         {activeTab === 'post-property' && <PostProperty />}
         {activeTab === 'view-properties' && <ViewProperties />}
-        {activeTab === 'view-payment-balance' && <ViewPaymentBalance />}
         {activeTab === 'settings' && <Settings />}
       </div>
     </div>

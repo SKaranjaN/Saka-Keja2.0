@@ -7,7 +7,6 @@ import TenantDashboard from './compononents/TenantDashboard';
 import PropertyList from './compononents/PropertyList';
 import PostProperty from './compononents/PostProperty';
 import ViewProperties from './compononents/ViewProperties';
-import ViewPaymentBalance from './compononents/ViewPaymentBalance';
 import TenantPropertyReview from './compononents/TenantPropertyReview';
 import Payments from './compononents/Payments';
 import EditProperty from './compononents/EditProperty';
@@ -23,7 +22,6 @@ function App() {
         <Route path="/rent" element={<PropertyList />} />
         <Route path="/post-property" element={<PostProperty />} />
         <Route path="/view-properties" element={<ViewProperties />} />
-        <Route path="/view-payment-balance" element={<ViewPaymentBalance />} />
         <Route path="/tenant-property-review" element={<TenantPropertyReview />} />
         <Route path="/payments" element={<Payments />} />
         <Route path="/edit-property/:propertyId" element={<EditProperty />} />
