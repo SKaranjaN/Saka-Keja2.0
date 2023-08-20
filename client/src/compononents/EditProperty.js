@@ -83,7 +83,7 @@ function EditProperty() {
   };
 
   return (
-    <div className="dot">
+    <div className="dot" style={{minHeight: '100vh' }}>
       <div className="back-arrow" onClick={() => navigate(-1)}>
     &#8249; Back
   </div>
