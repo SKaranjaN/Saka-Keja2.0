@@ -121,7 +121,7 @@ function TenantPropertyReview() {
     }
   };
   return (
-    <div>
+    <div className="dot">
       <div className="back-arrow" onClick={() => navigate(-1)}>
         &#8249; Back
       </div>

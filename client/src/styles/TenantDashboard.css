@@ -1,11 +1,12 @@
 .tenant-dashboard-container {
-    display: grid;
-    grid-template-columns: 20% 1fr;
-    height: 100vh;
-  }
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  min-height: 100vh; 
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(209, 231, 233, 0.8));
+}
   
   .tenant-dashboard-menu {
-    background-color: #dcdcdc;
+    background: linear-gradient(rgba(130, 184, 143, 0.5), rgba(78, 91, 92, 0.8));
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -59,7 +60,7 @@
     margin-bottom: 20px;
     display: flex;
     align-items: center;
-    background: #dddfdb;
+    background: linear-gradient(rgba(156, 214, 195, 0.5), rgba(188, 204, 198, 0.8));
     border-radius: 10px;
     height: 15px;
     

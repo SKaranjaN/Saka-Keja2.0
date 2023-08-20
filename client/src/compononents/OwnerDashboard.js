@@ -59,7 +59,7 @@ function OwnerDashboard() {
               onClick={() => handleTabClick('view-properties')}
               className={activeTab === 'view-properties' ? 'active' : ''}
             >
-              View My Properties
+              View Properties
             </div>
           </li>
           <li>
