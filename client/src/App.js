@@ -10,6 +10,7 @@ import ViewProperties from './compononents/ViewProperties';
 import TenantPropertyReview from './compononents/TenantPropertyReview';
 import Payments from './compononents/Payments';
 import EditProperty from './compononents/EditProperty';
+import HomeHtmlComponent from './compononents/HomeHtmlComponent'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/tenant-property-review" element={<TenantPropertyReview />} />
         <Route path="/payments" element={<Payments />} />
         <Route path="/edit-property/:propertyId" element={<EditProperty />} />
+        <Route path="/" element={<HomeHtmlComponent />} />
       </Routes>
     </Router>
   );
