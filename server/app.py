@@ -14,11 +14,12 @@ import cloudinary
 import cloudinary.uploader
 from flask_mail import Mail, Message
 from secrets import token_urlsafe
-from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
-from paypalcheckoutsdk.orders import OrdersCreateRequest
+import cloudinary.uploader
+import requests
+import base64
+from requests.auth import HTTPBasicAuth
+from datetime import datetime
 
-client_id = os.environ.get('PAYPAL_CLIENT_ID')
-client_secret = os.environ.get('PAYPAL_CLIENT_SECRET')
 
 cloudinary.config(
     cloud_name=Config.CLOUDINARY_CLOUD_NAME,
@@ -361,13 +362,8 @@ class Properties(Resource):
     @user_type_required(['owner', 'admin'])
     def post(self):
         data = request.get_json()
-        
-        image_urls = []
-        if 'image_urls' in data and isinstance(data['image_urls'], list):
-            for image_url in data['image_urls']:
-                uploaded_image = cloudinary.uploader.upload(image_url)
-                image_urls.append(uploaded_image['secure_url'])
-        
+        image_urls = data.get('image_urls', [])
+
         new_property = Property(
             owner_id=data['owner_id'],
             number_of_rooms=data['number_of_rooms'],
@@ -375,7 +371,6 @@ class Properties(Resource):
             location=data['location'],
             price=data['price'],
             description=data['description'],
-            rating=data['rating'],
             image_urls=image_urls
         )
         db.session.add(new_property)
@@ -385,7 +380,19 @@ class Properties(Resource):
         response = make_response(jsonify(response_dict), 201)
 
         return response
-
+    
+@app.route('/upload', methods=['POST'])
+def upload_image():
+    try:
+        file = request.files['image']
+        if file:
+            uploaded_image = cloudinary.uploader.upload(file)
+            return jsonify({'secure_url': uploaded_image['secure_url']}), 200
+        else:
+            return jsonify({'error': 'No file provided'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 @api.route('/properties/<int:id>')
 class Property_by_Id(Resource):
     @api.doc(description='Get a specific property by ID')
@@ -437,7 +444,7 @@ class Property_by_Id(Resource):
         response = make_response(jsonify(response_dict), 200)
 
         return response
-
+my_endpoint = 'https://357c-102-176-183-205.ngrok-free.app'
 @api.route('/payments')
 class Payments(Resource):
     @api.doc(description='Get a list of all payments')
@@ -462,63 +469,56 @@ class Payments(Resource):
 
         return make_response(jsonify(response), 200)
 
-    @api.doc(description='Create a new payment', body=payment_model)
-    @jwt_required()
-    @user_type_required(['tenant', 'admin'])
-    def post(self):
-        data = api.payload
-        amount = data['amount']
-        payment_date = data['payment_date']
-        status = data['status']
-        tenant_id = data['tenant_id']
-        property_id = data['property_id']
+    # @api.doc(description='Create a new payment', body=payment_model)
+    # @jwt_required()
+    # @user_type_required(['tenant', 'admin'])
+    # def post(self):
+@app.route('/payments', methods=["POST"])
+def MpesaExpress():
+    amount = request.args.get('amount')
+    phoneNumber = request.args.get('phoneNumber')
+    print(phoneNumber)
+    endpoint = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+    access_token = getAccessToken()
+    headers = { "Authorization": "Bearer %s" % access_token }
+    Timestamp = datetime.now()
+    times = Timestamp.strftime("%Y%m%d%H%M%S")
+    password_str = "174379" + "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919" + times
+    password_bytes = password_str.encode('utf-8')
+    password = base64.b64encode(password_bytes).decode('utf-8')
+    # password = hashlib.sha1(password_bytes).hexdigest()
+    data = {
+        "BusinessShortCode": "174379",
+        "Password": password,
+        "Timestamp": times,
+        "TransactionType": "CustomerPayBillOnline",
+        "PartyA": phoneNumber,
+        "PartyB": "174379",
+        "PhoneNumber":phoneNumber,
+        "CallBackURL": my_endpoint + '/lnmo-callback',
+        "AccountReference": "TestPay",
+        "TransactionDesc": "HelloTest",
+        "Amount": amount
+    }
+    res = requests.post(endpoint, json=data, headers=headers)
+    print(res)
+    return res.json()
+@app.route('/lnmo-callback', methods=['POST'])
+def incoming():
+    data = request.get_json()
+    print(data)
+    print("ok")
+    return 'ok'
+def getAccessToken():
+    consumer_key = "gI5C4GFFGx0bUERCDnTD4SfPElfNFnnG"
+    consumer_secret = "VM4pW3T6MdA36J1V"
+    endpoint = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+    r = requests.get(endpoint, auth=HTTPBasicAuth(consumer_key, consumer_secret))
+    data = r.json()
+    print(data)
+    return data['access_token']
 
-        owner_phone_number = get_owner_phone_number(property_id)
-
-        client_id = os.environ.get('PAYPAL_CLIENT_ID')
-        client_secret = os.environ.get('PAYPAL_CLIENT_SECRET')
-        environment = SandboxEnvironment(client_id, client_secret)
-        client = PayPalHttpClient(environment)
-
-        request = OrdersCreateRequest()
-        request.prefer('return=representation')
-        request.request_body({
-            "intent": "CAPTURE",
-            "purchase_units": [{
-                "amount": {
-                    "currency_code": "USD",
-                    "value": amount
-                }
-            }],
-            "application_context": {
-                "return_url": "https://your-redirect-url.com/success",
-                "cancel_url": "https://your-redirect-url.com/cancel"
-            }
-        })
-
-        try:
-            response = client.execute(request)
-            order_id = response.result.id
-
-            new_payment = Payment(
-                amount=amount,
-                payment_date=payment_date,
-                status=status,
-                tenant_id=tenant_id,
-                property_id=property_id
-            )
-            db.session.add(new_payment)
-            db.session.commit()
-            response_dict = {
-                "order_id": order_id,
-                "owner_phone_number": owner_phone_number,
-                "amount": amount,
-            }
-            return make_response(jsonify(response_dict), 201)
-
-        except Exception as e:
-            return make_response(jsonify({"error": str(e)}), 500)
-    
+        
 @api.route('/payments/<int:id>')
 class Payment_by_Id(Resource):
     @api.doc(description='Get a specific payment by ID')

@@ -18,6 +18,7 @@ sqlalchemy-serializer = "*"
 "sqlalchemy.orm" = "*"
 faker = "*"
 psycopg2 = "*"
+requests = "*"
 
 [dev-packages]
 
