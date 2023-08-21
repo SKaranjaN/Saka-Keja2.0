@@ -49,7 +49,7 @@ function Payments() {
             type="text"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="Phone number start with 254"
+            placeholder="Your Phone number start with 254"
           />
         </div>
         <div className="payment-input">
